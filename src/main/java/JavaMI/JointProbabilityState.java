@@ -42,7 +42,6 @@ public class JointProbabilityState
   public final HashMap<Integer,Double> firstProbMap;
   public final HashMap<Integer,Double> secondProbMap;
 
-  public final int jointMaxVal;
   public final int firstMaxVal;
   public final int secondMaxVal;
 
@@ -73,8 +72,6 @@ public class JointProbabilityState
     firstMaxVal = ProbabilityState.normaliseArray(firstVector,firstNormalisedVector);
     secondMaxVal = ProbabilityState.normaliseArray(secondVector,secondNormalisedVector);
    
-    jointMaxVal = firstMaxVal * secondMaxVal;
-
     HashMap<Pair<Integer,Integer>,Integer> jointCountMap = new HashMap<Pair<Integer,Integer>,Integer>();
     HashMap<Integer,Integer> firstCountMap = new HashMap<Integer,Integer>();
     HashMap<Integer,Integer> secondCountMap = new HashMap<Integer,Integer>();
