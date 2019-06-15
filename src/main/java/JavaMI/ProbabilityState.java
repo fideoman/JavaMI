@@ -92,6 +92,15 @@ public class ProbabilityState
    * The length of the vectors must be the same, and outputVector must be 
    * instantiated before calling this function.
    * @param inputVector The vector to normalise.
+   * IMPORTANTE NOTE:
+   * Hanchuan Peng's MutualInfo 0.9 MATLAB library makes the following extra logic for normalization.
+   * From his code:
+   * "Originally I added 0.5 before rounding, however seems the negative numbers and 
+   *      positive numbers are all rounded towarded 0; hence int(-1+0.5)=0 and int(1+0.5)=1;
+   *      This is unwanted because I need the above to be -1 and 1.
+   *      so, I just round with 0.5 adjustment for positive and negative differently"
+   * For this reason, data will be adjusted around -0.5 and 0.5 if input is positive or negative, respectively.
+   * 
    * @param outputVector The normalised vector. Must be instantiated to length inputVector.length.
    * @return The maximum state from the normalised vector.
    */
@@ -99,17 +108,26 @@ public class ProbabilityState
   {
     int minVal = 0;
     int maxVal = 0;
-    int currentValue;
+    int currentValue = 0;
     int vectorLength = inputVector.length;
     
     if (vectorLength > 0)
     {
-      minVal = (int) Math.floor(inputVector[0]);
-      maxVal = (int) Math.floor(inputVector[0]);
+    	// Hanchuan Peng extra logic.
+        if (inputVector[0] > 0 ) {
+    		minVal = maxVal = (int) (inputVector[0] + 0.5);
+    	} else {
+    		minVal = maxVal = (int) (inputVector[0] - 0.5);
+    	}
     
       for (int i = 0; i < vectorLength; i++)
       {
-        currentValue = (int) Math.floor(inputVector[i]);
+    	// Hanchuan Peng extra logic.
+    	  if (inputVector[i] > 0 ) {
+    		  currentValue = (int) (inputVector[i] + 0.5);
+    	  } else {
+    		  currentValue = (int) (inputVector[i] - 0.5);
+    	  }
         outputVector[i] = currentValue;
         
         if (currentValue < minVal)
